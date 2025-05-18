@@ -22,9 +22,9 @@ public class StorageEndpoints : IEndpoints
             ([FromServices] IS3Manager s3Manager, [FromQuery] string key) =>
             {
                 var data = await s3Manager.ReadStreamObjectAsync(Uri.UnescapeDataString(key));
-                return Results.File(data.Stream, data.ContentType);
+                return Results.Stream(data.Stream, data.ContentType);
             })
-            .WithSummary("Get single file")
+            .WithSummary("Stream single file")
             .MapToApiVersion(1);
         
         group.MapPost("/upload", async
@@ -35,9 +35,14 @@ public class StorageEndpoints : IEndpoints
                     OriginalFileName = file.FileName,
                     Stream = file.OpenReadStream()
                 });
-                return Results.Ok(new ApiResponse<UploadObjectResponse>(data));
+                return Results.Ok(new ApiResponse<UploadObjectResponse>
+                {
+                    Data = data,
+                    Message = "Upload file success"
+                });
             })
             .WithSummary("Upload single file")
+            .Produces<ApiResponse<UploadObjectResponse>>()
             .DisableAntiforgery()
             .MapToApiVersion(1);
     }

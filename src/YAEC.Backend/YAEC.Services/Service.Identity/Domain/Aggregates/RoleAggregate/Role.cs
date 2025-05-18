@@ -3,9 +3,9 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Package.Shared.Domain;
 
-namespace Service.Identity.Domain.Aggregates.UserAggregate;
+namespace Service.Identity.Domain.Aggregates.RoleAggregate;
 
-public class User : IBaseEntity<string>, IAuditableEntity<string>, ISoftDeleteEntity<string>
+public class Role : IBaseEntity<string>, IAuditableEntity<string>, ISoftDeleteEntity<string>
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -13,15 +13,14 @@ public class User : IBaseEntity<string>, IAuditableEntity<string>, ISoftDeleteEn
     
     public long AutoId { get; set; }
     
-    public string FullName { get; set; } = null!;
+    public string Name { get; set; } = null!;
     
-    public string Email { get; set; } = null!;
-    
-    public string PhoneNumber { get; set; } = null!;
-    
-    public string PasswordHash { get; set; } = null!;
-    
+    public string? Description { get; set; }
+
     public List<string> Policies { get; set; } = [];
+    
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? ParentId { get; set; }
     
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? CreatedAt { get; set; }

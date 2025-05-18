@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Package.OpenApi.MinimalApi;
 using Package.Shared.Mediator;
+using Package.Shared.ValueObjects;
 using Service.Identity.Application.UserModule.Commands;
 
 namespace Service.Identity.Endpoints;
@@ -20,12 +21,14 @@ public class AuthEndpoints : IEndpoints
     {
         group.MapPost("/sign-up", async
             ([FromServices] IMediator mediator, [FromBody] SignUpCommand command) => await mediator.SendAsync(command))
-            .WithSummary("Register an account")
+            .WithSummary("Đăng ký")
+            .Produces<ApiResponse<SignUpResponse>>()
             .MapToApiVersion(1);
 
         group.MapPost("/sign-in", async
             ([FromServices] IMediator mediator, [FromBody] SignInCommand command) => await mediator.SendAsync(command))
-            .WithSummary("Login your account")
+            .WithSummary("Đăng nhập")
+            .Produces<ApiResponse<SignInResponse>>()
             .MapToApiVersion(1);
     }
     
@@ -37,7 +40,7 @@ public class AuthEndpoints : IEndpoints
                 await Task.CompletedTask;
                 return Results.Ok("OK");
             })
-            .WithSummary("Login your account")
+            .WithSummary("Đăng nhập")
             .MapToApiVersion(2);
     }
 }

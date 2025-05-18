@@ -1,4 +1,5 @@
 using Package.FFmpeg;
+using Package.Identity;
 using Package.Logger;
 using Package.OpenApi;
 using Package.S3Manager;
@@ -11,11 +12,13 @@ services.AddCoreLogger();
 services.AddHttpContextAccessor();
 services.AddCoreCors();
 services.AddOpenApi(typeof(Program).Assembly);
+services.AddCoreIdentity();
 services.AddS3Manager();
 
 var app = builder.Build();
 app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
+app.UseCoreIdentity();
 app.UseOpenApi();
 app.MapGet("/", () => "Service.Storage");
 await app.InitializeFFmpeg();
