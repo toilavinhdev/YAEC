@@ -1,4 +1,4 @@
-namespace Package.Shared.Constants;
+namespace Package.Shared.Constants.Authorization;
 
 public static class Policies
 {

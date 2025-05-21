@@ -10,8 +10,13 @@
       <ProjectReference Include="..\..\YAEC.Packages\Package.Identity\Package.Identity.csproj" />
       <ProjectReference Include="..\..\YAEC.Packages\Package.Logger\Package.Logger.csproj" />
       <ProjectReference Include="..\..\YAEC.Packages\Package.OpenApi\Package.OpenApi.csproj" />
+      <ProjectReference Include="..\..\YAEC.Packages\Package.RabbitMQ\Package.RabbitMQ.csproj" />
       <ProjectReference Include="..\..\YAEC.Packages\Package.Redis\Package.Redis.csproj" />
       <ProjectReference Include="..\..\YAEC.Packages\Package.Shared\Package.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
     </ItemGroup>
 
 </Project>

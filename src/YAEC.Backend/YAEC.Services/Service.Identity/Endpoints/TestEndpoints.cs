@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Package.OpenApi.MinimalApi;
 using Package.RabbitMQ.Services;
-using Package.Redis;
 using Package.Shared.Models.Events;
 
-namespace Service.Catalog.Endpoints;
+namespace Service.Identity.Endpoints;
 
 public class TestEndpoints : IEndpoints
 {
@@ -13,20 +12,6 @@ public class TestEndpoints : IEndpoints
         var group = app
             .MapGroup("/test")
             .WithTags("Test");
-
-        group.MapGet("/redis/get", async
-            ([FromQuery] string key, [FromServices] IRedisService redisService) =>
-            {
-                return await redisService.StringGetAsync(key);
-            })
-            .MapToApiVersion(1);
-        
-        group.MapPost("/redis/set", async
-            ([FromQuery] string key, [FromBody] string value, [FromServices] IRedisService redisService) =>
-            {
-                await redisService.StringSetAsync(key, value);
-            })
-            .MapToApiVersion(1);
         
         group.MapPost("/rabbitmq/publish", async
             ([FromBody] TestMessageBrokerEvent message, [FromServices] IRabbitMQProducerService<TestMessageBrokerEvent> messageBusClient) =>

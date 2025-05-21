@@ -2,9 +2,13 @@ using Package.Identity;
 using Package.Logger;
 using Package.MongoDb;
 using Package.OpenApi;
+using Package.RabbitMQ;
+using Package.RabbitMQ.Services;
 using Package.Shared.Extensions;
 using Package.Shared.Mediator;
+using Package.Shared.Models.Events;
 using Service.Identity;
+using Service.Identity.Services;
 
 var builder = WebApplication.CreateBuilder(args).WithEnvironment<AppSettings>();
 var services = builder.Services;
@@ -15,6 +19,8 @@ services.AddOpenApi(typeof(Program).Assembly);
 services.AddCoreMediator(typeof(Program).Assembly);
 services.AddCoreIdentity();
 services.AddMongoDb();
+services.AddRabbitMQ();
+services.AddSingleton<IRabbitMQProducerService<TestMessageBrokerEvent>, TestProducerService>();
 
 var app = builder.Build();
 app.UseCoreExceptionHandler();
