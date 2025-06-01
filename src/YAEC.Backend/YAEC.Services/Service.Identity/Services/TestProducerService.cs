@@ -1,8 +1,8 @@
 using System.Text;
 using Package.RabbitMQ.Services;
 using Package.Shared.Constants.RabbitMQ;
+using Package.Shared.Events;
 using Package.Shared.Extensions;
-using Package.Shared.Models.Events;
 using RabbitMQ.Client;
 
 namespace Service.Identity.Services;

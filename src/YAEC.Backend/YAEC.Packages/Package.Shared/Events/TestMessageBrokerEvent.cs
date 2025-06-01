@@ -1,4 +1,4 @@
-namespace Package.Shared.Models.Events;
+namespace Package.Shared.Events;
 
 public class TestMessageBrokerEvent
 {

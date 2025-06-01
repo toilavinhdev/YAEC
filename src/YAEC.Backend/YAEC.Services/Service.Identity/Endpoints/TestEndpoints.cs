@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Package.OpenApi.MinimalApi;
 using Package.RabbitMQ.Services;
-using Package.Shared.Models.Events;
+using Package.Shared.Events;
 
 namespace Service.Identity.Endpoints;
 

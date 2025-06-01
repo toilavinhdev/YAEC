@@ -4,9 +4,9 @@ using Package.MongoDb;
 using Package.OpenApi;
 using Package.RabbitMQ;
 using Package.RabbitMQ.Services;
+using Package.Shared.Events;
 using Package.Shared.Extensions;
 using Package.Shared.Mediator;
-using Package.Shared.Models.Events;
 using Service.Identity;
 using Service.Identity.Services;
 

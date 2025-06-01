@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Package.OpenApi.MinimalApi;
 using Package.RabbitMQ.Services;
 using Package.Redis;
-using Package.Shared.Models.Events;
+using Package.Shared.Events;
+using Package.Telegram;
 
 namespace Service.Catalog.Endpoints;
 
@@ -11,7 +12,7 @@ public class TestEndpoints : IEndpoints
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         var group = app
-            .MapGroup("/test")
+            .MapGroup("/test/{ITelegramBotService}")
             .WithTags("Test");
 
         group.MapGet("/redis/get", async
@@ -32,6 +33,13 @@ public class TestEndpoints : IEndpoints
             ([FromBody] TestMessageBrokerEvent message, [FromServices] IRabbitMQProducerService<TestMessageBrokerEvent> messageBusClient) =>
             {
                 await messageBusClient.PublishAsync(message);
+            })
+            .MapToApiVersion(1);
+        
+        group.MapPost("/telegram/send-message", async
+            ([FromBody] string message, [FromServices] ITelegramBotService bot) =>
+            {
+                await bot.SendMessage(message);
             })
             .MapToApiVersion(1);
     }

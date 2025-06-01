@@ -29,7 +29,13 @@ public class GetMeQueryHandler : IRequestHandler<GetMeQuery, IResult>
         var userAsyncCursor = await _mongoDbService.Collection<User>()
             .FindAsync(userFilter, cancellationToken: cancellationToken);
         var user = await userAsyncCursor.FirstOrDefaultAsync(cancellationToken: cancellationToken);
-        if (user is null) throw new BusinessExceptions("User was not found");
+        if (user is null)
+        {
+            return Results.NotFound(new ApiResponse
+            {
+                Message = "User was not found"
+            });
+        }
         return Results.Ok(new ApiResponse<GetMeResponse>()
         {
             Data = new GetMeResponse
