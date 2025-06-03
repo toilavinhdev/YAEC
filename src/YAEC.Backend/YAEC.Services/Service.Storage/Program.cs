@@ -5,6 +5,7 @@ using Package.OpenApi;
 using Package.S3Manager;
 using Package.Shared.Extensions;
 using Service.Storage;
+using Service.Storage.Services;
 
 var builder = WebApplication.CreateBuilder(args).WithEnvironment<AppSettings>();
 var services = builder.Services;
@@ -14,6 +15,7 @@ services.AddCoreCors();
 services.AddOpenApi(typeof(Program).Assembly);
 services.AddCoreIdentity();
 services.AddS3Manager();
+services.AddScoped<IVideoProcessorService, VideoProcessorService>();
 
 var app = builder.Build();
 app.UseCoreExceptionHandler();

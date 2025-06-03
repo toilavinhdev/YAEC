@@ -3,6 +3,7 @@ using Package.OpenApi.MinimalApi;
 using Package.S3Manager;
 using Package.S3Manager.Models;
 using Package.Shared.ValueObjects;
+using Service.Storage.Services;
 
 namespace Service.Storage.Endpoints;
 
@@ -43,6 +44,15 @@ public class StorageEndpoints : IEndpoints
             })
             .WithSummary("Upload single file")
             .Produces<ApiResponse<UploadObjectResponse>>()
+            .DisableAntiforgery()
+            .MapToApiVersion(1);
+        
+        group.MapPost("/video/process", async 
+            (IFormFile file, IVideoProcessorService videoProcessorService) =>
+            {
+                await videoProcessorService.ProcessVideoAsync(file);
+            })
+            .WithSummary("Process video")
             .DisableAntiforgery()
             .MapToApiVersion(1);
     }
