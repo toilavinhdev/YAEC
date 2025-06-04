@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Package.OpenApi.MinimalApi;
-using Package.S3Manager;
-using Package.S3Manager.Models;
+using Package.ObjectStorage;
+using Package.ObjectStorage.Models;
 using Package.Shared.ValueObjects;
 using Service.Storage.Services;
 

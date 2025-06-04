@@ -17,7 +17,7 @@
         <ProjectReference Include="..\..\YAEC.Packages\Package.Logger\Package.Logger.csproj"/>
         <ProjectReference Include="..\..\YAEC.Packages\Package.OpenApi\Package.OpenApi.csproj"/>
         <ProjectReference Include="..\..\YAEC.Packages\Package.Shared\Package.Shared.csproj"/>
-        <ProjectReference Include="..\..\YAEC.Packages\Package.S3Manager\Package.S3Manager.csproj"/>
+        <ProjectReference Include="..\..\YAEC.Packages\Package.ObjectStorage\Package.ObjectStorage.csproj" />
     </ItemGroup>
 
 </Project>

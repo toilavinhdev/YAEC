@@ -1,4 +1,4 @@
-namespace Package.S3Manager.Models;
+namespace Package.ObjectStorage.Models;
 
 public class UploadObjectRequest
 {

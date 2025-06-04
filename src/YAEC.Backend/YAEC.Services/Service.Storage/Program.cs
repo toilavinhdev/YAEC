@@ -2,7 +2,7 @@ using Package.FFmpeg;
 using Package.Identity;
 using Package.Logger;
 using Package.OpenApi;
-using Package.S3Manager;
+using Package.ObjectStorage;
 using Package.Shared.Extensions;
 using Service.Storage;
 using Service.Storage.Services;

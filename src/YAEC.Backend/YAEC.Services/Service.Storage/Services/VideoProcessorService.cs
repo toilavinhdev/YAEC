@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Package.S3Manager;
+using Package.ObjectStorage;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Events;
 

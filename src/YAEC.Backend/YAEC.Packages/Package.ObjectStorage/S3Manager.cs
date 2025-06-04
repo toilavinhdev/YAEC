@@ -1,9 +1,9 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.Extensions.Logging;
-using Package.S3Manager.Models;
+using Package.ObjectStorage.Models;
 
-namespace Package.S3Manager;
+namespace Package.ObjectStorage;
 
 public interface IS3Manager
 {

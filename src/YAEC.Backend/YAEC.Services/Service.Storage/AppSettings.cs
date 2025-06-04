@@ -1,5 +1,5 @@
 using Package.Identity;
-using Package.S3Manager;
+using Package.ObjectStorage;
 using Package.Shared.Extensions;
 
 namespace Service.Storage;

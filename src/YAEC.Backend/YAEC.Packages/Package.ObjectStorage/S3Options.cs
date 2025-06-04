@@ -1,4 +1,4 @@
-namespace Package.S3Manager;
+namespace Package.ObjectStorage;
 
 public class S3Options
 {

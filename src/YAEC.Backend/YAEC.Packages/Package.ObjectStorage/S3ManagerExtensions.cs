@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Package.S3Manager;
+namespace Package.ObjectStorage;
 
 public static class S3ManagerExtensions
 {
