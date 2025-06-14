@@ -39,7 +39,7 @@ public class TestEndpoints : IEndpoints
         group.MapPost("/telegram/send-message", async
             ([FromBody] string message, [FromServices] ITelegramBotService bot) =>
             {
-                await bot.SendMessage(message);
+                await bot.SendMessageAsync(message);
             })
             .MapToApiVersion(1);
     }

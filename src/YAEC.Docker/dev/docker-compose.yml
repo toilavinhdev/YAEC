@@ -6,7 +6,6 @@ volumes:
   redis-data: {}
   rabbitmq-data: {}
   minio-data: {}
-  redisinsight-data: {}
 
 services:
   mongodb:
@@ -57,11 +56,3 @@ services:
     command: server /data --console-address ":9001"
     volumes:
       - minio-data:/data
-  
-  redisinsight:
-    container_name: ${COMPOSE_PROJECT_NAME}-redisinsight
-    image: redis/redisinsight:latest
-    ports:
-      - "5540:5540"
-    volumes:
-      - redisinsight-data:/data

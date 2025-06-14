@@ -9,7 +9,7 @@ public interface ITelegramBotService
 {
     Task<object?> GetUpdatesAsync(CancellationToken cancellationToken = default);
 
-    Task<Message> SendMessage(string message, CancellationToken cancellation = default);
+    Task<Message> SendMessageAsync(string message, CancellationToken cancellation = default);
 }
 
 public class TelegramBotService : ITelegramBotService
@@ -36,7 +36,7 @@ public class TelegramBotService : ITelegramBotService
         return data;
     }
 
-    public async Task<Message> SendMessage(string message, CancellationToken cancellation = default)
+    public async Task<Message> SendMessageAsync(string message, CancellationToken cancellation = default)
     {
         return await _client.SendMessage(
             chatId: _options.ChatId,

@@ -7,7 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\YAEC.Packages\Package.Identity\Package.Identity.csproj" />
+        <ProjectReference Include="..\..\YAEC.Packages\Package.Hangfire\Package.Hangfire.csproj"/>
+        <ProjectReference Include="..\..\YAEC.Packages\Package.Identity\Package.Identity.csproj"/>
         <ProjectReference Include="..\..\YAEC.Packages\Package.Logger\Package.Logger.csproj"/>
         <ProjectReference Include="..\..\YAEC.Packages\Package.OpenApi\Package.OpenApi.csproj"/>
         <ProjectReference Include="..\..\YAEC.Packages\Package.Payments\Package.Payments.csproj"/>

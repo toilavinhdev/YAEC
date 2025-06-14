@@ -1,3 +1,5 @@
+using Package.Hangfire;
+using Package.Hangfire.Abstractions;
 using Package.Identity;
 using Package.Logger;
 using Package.OpenApi;
@@ -5,6 +7,7 @@ using Package.Payments.VnPay;
 using Package.Shared.Extensions;
 using Package.Shared.Mediator;
 using Service.Payment;
+using Service.Payment.Services.BackgroundJobs;
 
 var builder = WebApplication.CreateBuilder(args).WithEnvironment<AppSettings>();
 var services = builder.Services;
@@ -14,12 +17,15 @@ services.AddCoreCors();
 services.AddOpenApi(typeof(Program).Assembly);
 services.AddCoreMediator(typeof(Program).Assembly);
 services.AddCoreIdentity();
+services.AddCoreHangfire();
 services.AddVnPay();
+services.AddScoped<IHangfireScheduleService, TestScheduleService>();
 
 var app = builder.Build();
 app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
 app.UseOpenApi();
+app.UseCoreHangfire();
 app.MapGet("/", () => "Service.Payment");
 app.Run();
