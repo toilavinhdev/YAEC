@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\YAEC.Packages\Package.Identity\Package.Identity.csproj"/>
+        <ProjectReference Include="..\..\YAEC.Packages\Package.MongoDB\Package.MongoDB.csproj"/>
+        <ProjectReference Include="..\..\YAEC.Packages\Package.Serilog\Package.Serilog.csproj"/>
+        <ProjectReference Include="..\..\YAEC.Shared\YAEC.Shared.csproj"/>
+    </ItemGroup>
+
+</Project>

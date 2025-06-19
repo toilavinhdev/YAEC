@@ -1,0 +1,13 @@
+version: "3.8"
+
+volumes:
+  mongodb-data: {}
+
+services:
+  mongodb:
+    container_name: ${COMPOSE_PROJECT_NAME}-mongodb
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
