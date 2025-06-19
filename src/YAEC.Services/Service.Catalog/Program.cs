@@ -1,4 +1,5 @@
 using Package.Identity;
+using Package.Redis;
 using Package.Serilog;
 using Service.Catalog.AppSettings;
 using YAEC.Shared.Extensions;
@@ -14,6 +15,7 @@ services.AddCoreCors();
 services.AddCoreOpenApi(typeof(Program).Assembly);
 services.AddCoreMediator(typeof(Program).Assembly);
 services.AddCoreIdentity();
+services.AddRedis();
 
 var app = builder.Build();
 app.UseCoreExceptionHandler();

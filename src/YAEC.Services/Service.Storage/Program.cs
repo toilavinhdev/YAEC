@@ -1,6 +1,7 @@
 using Package.FFmpeg;
 using Package.Identity;
 using Package.ObjectStorage;
+using Package.Redis;
 using Package.Serilog;
 using Service.Storage.AppSettings;
 using Service.Storage.Services;
@@ -17,6 +18,7 @@ services.AddCoreCors();
 services.AddCoreOpenApi(typeof(Program).Assembly);
 services.AddCoreMediator(typeof(Program).Assembly);
 services.AddCoreIdentity();
+services.AddRedis();
 services.AddObjectStorage();
 services.AddTransient<IVideoProcessorService, VideoProcessorService>();
 

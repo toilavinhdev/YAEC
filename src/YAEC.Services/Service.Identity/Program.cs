@@ -1,5 +1,6 @@
 using Package.Identity;
 using Package.MongoDb;
+using Package.Redis;
 using Package.Serilog;
 using Service.Identity.AppSettings;
 using YAEC.Shared.Extensions;
@@ -16,6 +17,7 @@ services.AddCoreOpenApi(typeof(Program).Assembly);
 services.AddCoreMediator(typeof(Program).Assembly);
 services.AddCoreIdentity();
 services.AddMongoDb();
+services.AddRedis();
 
 var app = builder.Build();
 app.UseCoreExceptionHandler();

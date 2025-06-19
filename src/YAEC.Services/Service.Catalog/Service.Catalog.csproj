@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\YAEC.Packages\Package.Identity\Package.Identity.csproj"/>
+        <ProjectReference Include="..\..\YAEC.Packages\Package.Redis\Package.Redis.csproj"/>
         <ProjectReference Include="..\..\YAEC.Packages\Package.Serilog\Package.Serilog.csproj"/>
         <ProjectReference Include="..\..\YAEC.Shared\YAEC.Shared.csproj"/>
     </ItemGroup>
