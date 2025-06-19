@@ -2,6 +2,7 @@ version: "3.8"
 
 volumes:
   mongodb-data: {}
+  minio-data: {}
 
 services:
   mongodb:
@@ -11,3 +12,16 @@ services:
       - "27017:27017"
     volumes:
       - mongodb-data:/data/db
+  
+  minio:
+    container_name: ${COMPOSE_PROJECT_NAME}-minio
+    image: quay.io/minio/minio
+    ports:
+      - "9000:9000" # API
+      - "9001:9001" # Web UI
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=Password&1234
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
