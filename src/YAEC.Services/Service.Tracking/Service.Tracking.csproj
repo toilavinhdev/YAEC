@@ -7,10 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\YAEC.Packages\Package.Sharing\Package.Sharing.Ffmpeg\Package.Sharing.Ffmpeg.csproj"/>
         <ProjectReference Include="..\..\YAEC.Packages\Package.Identity\Package.Identity.csproj"/>
-        <ProjectReference Include="..\..\YAEC.Packages\Package.ObjectStorage\Package.ObjectStorage.csproj"/>
-        <ProjectReference Include="..\..\YAEC.Packages\Package.Redis\Package.Redis.csproj"/>
+        <ProjectReference Include="..\..\YAEC.Packages\Package.MongoDB\Package.MongoDB.csproj"/>
         <ProjectReference Include="..\..\YAEC.Packages\Package.Serilog\Package.Serilog.csproj"/>
         <ProjectReference Include="..\..\YAEC.Shared\YAEC.Shared.csproj"/>
     </ItemGroup>

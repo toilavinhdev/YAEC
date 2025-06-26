@@ -1,8 +1,8 @@
-using Package.FFmpeg;
 using Package.Identity;
 using Package.ObjectStorage;
 using Package.Redis;
 using Package.Serilog;
+using Package.Sharing.Ffmpeg;
 using Service.Storage.AppSettings;
 using Service.Storage.Services;
 using YAEC.Shared.Extensions;
@@ -27,5 +27,6 @@ app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
 app.UseCoreOpenApi();
+app.MapGet("/", () => "Service.Storage");
 await app.InitializeFFmpeg();
 await app.RunAsync();

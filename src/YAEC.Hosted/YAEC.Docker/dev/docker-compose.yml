@@ -1,8 +1,10 @@
 version: "3.8"
 
 volumes:
-  mongodb-data: {}
-  minio-data: {}
+  mongodb-data:
+    driver: local
+  minio-data:
+    driver: local
 
 services:
   mongodb:
@@ -10,6 +12,9 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
       - mongodb-data:/data/db
   
@@ -20,8 +25,8 @@ services:
       - "9000:9000" # API
       - "9001:9001" # Web UI
     environment:
-      - MINIO_ROOT_USER=minio
-      - MINIO_ROOT_PASSWORD=Password&1234
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     command: server /data --console-address ":9001"
     volumes:
       - minio-data:/data

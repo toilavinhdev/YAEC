@@ -24,4 +24,5 @@ app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
 app.UseCoreOpenApi();
+app.MapGet("/", () => "Service.Identity");
 app.Run();

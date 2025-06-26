@@ -1,7 +1,6 @@
 using Package.Identity;
-using Package.Redis;
 using Package.Serilog;
-using Service.Catalog.AppSettings;
+using Service.Sharing.AppSettings;
 using YAEC.Shared.Extensions;
 using YAEC.Shared.Mediator;
 using YAEC.Shared.OpenApi;
@@ -15,12 +14,11 @@ services.AddCoreCors();
 services.AddCoreOpenApi(typeof(Program).Assembly);
 services.AddCoreMediator(typeof(Program).Assembly);
 services.AddCoreIdentity();
-services.AddRedis();
 
 var app = builder.Build();
 app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
 app.UseCoreOpenApi();
-app.MapGet("/", () => "Service.Catalog");
+app.MapGet("/", () => "Service.Sharing");
 app.Run();

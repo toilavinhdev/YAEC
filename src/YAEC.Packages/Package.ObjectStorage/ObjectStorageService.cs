@@ -1,6 +1,7 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.Extensions.Logging;
+using Package.ObjectStorage.Exceptions;
 using Package.ObjectStorage.Models;
 
 namespace Package.ObjectStorage;

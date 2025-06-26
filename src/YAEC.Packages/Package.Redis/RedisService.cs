@@ -1,6 +1,6 @@
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Package.Redis.Models;
+using Package.Redis.Events;
 using StackExchange.Redis;
 
 namespace Package.Redis;
