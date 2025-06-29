@@ -1,4 +1,4 @@
-namespace YAEC.Shared.Constants.Enumerations;
+namespace YAEC.Shared.Constants.Enumerations.Customer;
 
 public enum Gender
 {

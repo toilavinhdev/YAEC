@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
-namespace Package.Shared.Extensions;
+namespace YAEC.Shared.Extensions;
 
 public static class StringExtensions
 {

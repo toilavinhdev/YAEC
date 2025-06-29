@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 using Package.MongoDb.Collections;
+using YAEC.Shared.Extensions;
 
 namespace Package.MongoDb;
 
@@ -29,7 +30,7 @@ public class MongoDbService : IMongoDbService
         {
             builder.Subscribe<CommandStartedEvent>(e =>
             {
-                logger.LogInformation("Mongo driver execute command {Name}: {@Command}", e.CommandName, e.Command.ToJson());
+                logger.LogInformation("Mongo driver execute command {Name}: {@Command}", e.CommandName, BsonExtensionMethods.ToJson(e.Command));
             });
         };
         _client = new MongoClient(settings);
@@ -39,7 +40,7 @@ public class MongoDbService : IMongoDbService
     public IMongoCollection<T> Collection<T>()
     {
         var collectionName = typeof(T).Name;
-        return _database.GetCollection<T>(collectionName);
+        return _database.GetCollection<T>(collectionName.ToUnderscoreCase());
     }
 
     public async Task<long> NextSequenceAsync<T>(CancellationToken cancellationToken = default)
@@ -53,16 +54,16 @@ public class MongoDbService : IMongoDbService
             sequence = new MongoDbSequence
             {
                 Id = ObjectId.GenerateNewId().ToString(),
-                CollectionName = typeof(T).Name,
+                CollectionName = typeof(T).Name.ToUnderscoreCase(),
                 Value = 1,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTimeExtensions.Now,
             };
             await Collection<MongoDbSequence>().InsertOneAsync(sequence, cancellationToken: cancellationToken);
         }
         else
         {
             sequence.Value++;
-            sequence.ModifiedAt = DateTime.UtcNow;
+            sequence.ModifiedAt = DateTimeExtensions.Now;
             await Collection<MongoDbSequence>().UpdateOneAsync(
                 sequenceFilter,
                 Builders<MongoDbSequence>.Update

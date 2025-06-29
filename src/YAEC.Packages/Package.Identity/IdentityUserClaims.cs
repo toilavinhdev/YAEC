@@ -11,9 +11,6 @@ public class IdentityUserClaims
     [JsonPropertyName("id")]
     public string Id { get; set; } = null!;
 
-    [JsonPropertyName("fullName")]
-    public string FullName { get; set; } = null!;
-
     [JsonPropertyName("email")]
     public string Email { get; set; } = null!;
     
@@ -22,24 +19,36 @@ public class IdentityUserClaims
     
     [JsonPropertyName("policies")]
     public List<string> Policies { get; set; } = null!;
-
+    
     public string GenerateAccessToken(IdentityOptions options)
+    {
+        return GenerateAccessToken(
+            options.TokenSigningKey,
+            options.AccessTokenDurationInMinutes,
+            options.Issuer,
+            options.Audience);
+    }
+    
+    public string GenerateAccessToken(
+        string signingKey,
+        int accessTokenDurationInMinutes,
+        string? issuer,
+        string? audience)
     {
         var claims = new List<Claim>
         {
             new("id", Id),
-            new("fullName", FullName),
             new("email", Email),
             new("phoneNumber", PhoneNumber),
             new("policies",  string.Join(",", Policies))
         };
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.TokenSigningKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey));
         var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var expires = DateTime.UtcNow.AddMinutes(options.AccessTokenDurationInMinutes);
+        var expires = DateTime.UtcNow.AddMinutes(accessTokenDurationInMinutes);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Issuer = options.Issuer,
-            Audience = options.Audience,
+            Issuer = issuer,
+            Audience = audience,
             IssuedAt = DateTime.UtcNow,
             Subject = new ClaimsIdentity(claims),
             Expires = expires,

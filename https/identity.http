@@ -1,0 +1,39 @@
+### Login your account
+POST {{IDENTITY_BASE_URL}}/api/v1/auth/sign-in
+accept: application/json
+Content-Type: application/json
+
+{
+  "userName": "0913361135",
+  "password": "string"
+}
+
+> {%
+    if (response.status === 200){
+        const accessToken = response.body["data"]["accessToken"];
+        client.global.set("ACCESS_TOKEN", accessToken)
+        console.log("Access token:", client.global.get("ACCESS_TOKEN"));
+    }
+%}
+
+### Register new account
+POST {{IDENTITY_BASE_URL}}/api/v1/auth/sign-up
+accept: application/json
+Content-Type: application/json
+
+{
+  "email": "hoangdvinh68@gmail.com",
+  "phoneNumber": "0913361135",
+  "password": "string"
+}
+
+### Update password
+POST {{IDENTITY_BASE_URL}}/api/v1/auth/update-password
+accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+{
+"currentPassword": "stringg",
+"newPassword": "string"
+}

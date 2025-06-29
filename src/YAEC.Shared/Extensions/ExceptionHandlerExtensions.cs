@@ -22,6 +22,7 @@ public static class ExceptionHandlerExtensions
                     httpContext.Response.ContentType = "application/problem+json";
                     httpContext.Response.StatusCode = exception switch
                     {
+                        UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
                         _ => (int)HttpStatusCode.InternalServerError,
                     };
                     await httpContext.Response.WriteAsJsonAsync(
@@ -29,6 +30,7 @@ public static class ExceptionHandlerExtensions
                         {
                             Code = exception switch
                             {
+                                UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
                                 _ => (int)HttpStatusCode.InternalServerError,
                             },
                             Message = exception.Message
