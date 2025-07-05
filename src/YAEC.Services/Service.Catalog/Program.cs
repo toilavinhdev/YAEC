@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Package.Identity;
 using Package.Redis;
 using Package.Serilog;
@@ -21,6 +22,10 @@ var app = builder.Build();
 app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
-app.UseCoreOpenApi();
+app.UseCoreOpenApi("/catalog/api/v{apiVersion:apiVersion}", apiVersionSetBuilder =>
+{
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(1));
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(2));
+});
 app.MapGet("/", () => "Service.Catalog");
 app.Run();

@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Package.Identity;
 using Package.ObjectStorage;
 using Package.Redis;
@@ -26,7 +27,11 @@ var app = builder.Build();
 app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
-app.UseCoreOpenApi();
+app.UseCoreOpenApi("/storage/api/v{apiVersion:apiVersion}", apiVersionSetBuilder =>
+{
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(1));
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(2));
+});
 app.MapGet("/", () => "Service.Storage");
 await app.InitializeFFmpeg();
 await app.RunAsync();

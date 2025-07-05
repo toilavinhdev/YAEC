@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Package.Identity;
 using Package.Serilog;
 using Service.Sharing.AppSettings;
@@ -19,6 +20,10 @@ var app = builder.Build();
 app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
-app.UseCoreOpenApi();
+app.UseCoreOpenApi("/sharing/api/v{apiVersion:apiVersion}", apiVersionSetBuilder =>
+{
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(1));
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(2));
+});
 app.MapGet("/", () => "Service.Sharing");
 app.Run();

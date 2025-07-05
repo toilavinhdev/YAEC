@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Package.Identity;
 using Package.MongoDb;
 using Package.Redis;
@@ -23,6 +24,10 @@ var app = builder.Build();
 app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
-app.UseCoreOpenApi();
+app.UseCoreOpenApi("/identity/api/v{apiVersion:apiVersion}", apiVersionSetBuilder =>
+{
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(1));
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(2));
+});
 app.MapGet("/", () => "Service.Identity");
 app.Run();

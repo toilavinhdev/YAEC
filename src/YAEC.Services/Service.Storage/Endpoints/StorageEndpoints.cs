@@ -12,12 +12,13 @@ public class StorageEndpoints : IEndpoints
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
         var group = app
-            .MapGroup("/storage")
+            .MapGroup("/")
             .WithTags("Storage");
         V1(group);
+        V2(group);
     }
 
-    private static void V1(RouteGroupBuilder group)
+    public void V1(RouteGroupBuilder group)
     {
         group.MapGet("/", async
             ([FromServices] IObjectStorageService objectStorageService, [FromQuery] string key) =>
@@ -55,5 +56,12 @@ public class StorageEndpoints : IEndpoints
             .WithSummary("Process video")
             .DisableAntiforgery()
             .MapToApiVersion(1);
+    }
+
+    private static void V2(RouteGroupBuilder group)
+    {
+        group.MapGet("/", Results.NoContent)
+            .WithSummary("Stream single file")
+            .MapToApiVersion(2);
     }
 }

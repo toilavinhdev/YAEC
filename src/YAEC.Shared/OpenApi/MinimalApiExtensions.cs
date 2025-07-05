@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Asp.Versioning;
 using Asp.Versioning.Builder;
@@ -36,12 +37,21 @@ internal static class MinimalApiExtensions
             .Select(type => ServiceDescriptor.Transient(typeof(IEndpoints), type));
         services.TryAddEnumerable(serviceDescriptors);
     }
-    
-    public static void UseCoreMinimalApis(this WebApplication app, ApiVersionSet apiVersionSet)
+
+    public static void UseCoreMinimalApis(this WebApplication app, [StringSyntax("Route")] string endpointPrefix,
+        Action<ApiVersionSetBuilder> apiVersionSetBuilderAction)
     {
+        if (string.IsNullOrWhiteSpace(endpointPrefix)) endpointPrefix = "/api/v{apiVersion:apiVersion}";
+        
+        var apiVersionSetBuilder = app.NewApiVersionSet();
+        apiVersionSetBuilderAction.Invoke(apiVersionSetBuilder);
+        apiVersionSetBuilder.ReportApiVersions();
+        var apiVersionSet = apiVersionSetBuilder.Build();
+
         var versionedGroup = app
-            .MapGroup("/api/v{apiVersion:apiVersion}")
+            .MapGroup(endpointPrefix)
             .WithApiVersionSet(apiVersionSet);
+        
         var endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoints>>();
         foreach (var endpoint in endpoints)
         {

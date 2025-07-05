@@ -1,0 +1,5 @@
+*
+
+!.env.demo
+!docker-compose.yml
+!.gitignore

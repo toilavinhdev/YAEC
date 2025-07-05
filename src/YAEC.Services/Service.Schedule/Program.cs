@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Package.Hangfire;
 using Package.Hangfire.Abstractions;
 using Package.Identity;
@@ -24,7 +25,11 @@ var app = builder.Build();
 app.UseCoreExceptionHandler();
 app.UseCors(CorsExtensions.AllowAll);
 app.UseCoreIdentity();
-app.UseCoreOpenApi();
+app.UseCoreOpenApi("/schedule/api/v{apiVersion:apiVersion}", apiVersionSetBuilder =>
+{
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(1));
+    apiVersionSetBuilder.HasApiVersion(new ApiVersion(2));
+});
 app.UseCoreHangfireScheduleJobs();
 app.UseCoreHangfireDashboard("/hangfire");
 app.MapGet("/", () => "Service.Schedule");

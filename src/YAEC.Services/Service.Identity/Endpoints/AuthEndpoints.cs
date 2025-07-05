@@ -17,7 +17,7 @@ public class AuthEndpoints : IEndpoints
         V1(group);
     }
 
-    private static void V1(RouteGroupBuilder group)
+    public void V1(RouteGroupBuilder group)
     {
         group.MapPost("/sign-up", async
             ([FromServices] IMediator mediator, [FromBody] SignUpCommand command) => await mediator.SendAsync(command))

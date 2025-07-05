@@ -3,15 +3,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace YAEC.Shared.OpenApi.Swagger;
+namespace YAEC.Shared.OpenApi;
 
 internal static class SwaggerExtensions
 {
-    /// <summary>
-    /// Add swagger document
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="title">Set title for swagger document</param>
     public static void AddCoreSwagger(this IServiceCollection services, string title)
     {
         services.AddSwaggerGen(options =>
@@ -56,11 +51,6 @@ internal static class SwaggerExtensions
         });
     }
     
-    /// <summary>
-    /// Use Swagger UI
-    /// </summary>
-    /// <param name="app"></param>
-    /// <param name="title">Set title for swagger page</param>
     public static void UseCoreSwagger(this WebApplication app, string title = "Swagger UI")
     {
         const string urlTemplate = "/swagger/{{DocumentName}}/swagger.json";
