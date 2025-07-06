@@ -6,7 +6,7 @@ public class ObjectStorageOptions
     
     public string BucketName { get; set; } = null!;
     
-    public string AccessKey { get; set; } = null!;
+    public string Credential { get; set; } = null!;
     
-    public string SecretKey { get; set; } = null!;
+    public bool Ssl { get; set; }
 }

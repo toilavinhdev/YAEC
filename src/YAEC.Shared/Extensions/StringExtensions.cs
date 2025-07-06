@@ -64,12 +64,6 @@ public static class StringExtensions
         return string.Concat(inspect).ToLower();
     }
     
-    public static Stream ToMemoryStream(this string @this)
-    {
-        Encoding encoding = Activator.CreateInstance<ASCIIEncoding>();
-        return new MemoryStream(encoding.GetBytes(@this));
-    }
-    
     public static string ToSha256(this string input)
     {
         if (string.IsNullOrEmpty(input)) return string.Empty;
@@ -80,7 +74,7 @@ public static class StringExtensions
         return stringBuilder.ToString();
     }
     
-    public static string Slugify(this string input)
+    public static string ToSlug(this string input)
     {
         var regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
         var slug = input
@@ -105,6 +99,16 @@ public static class StringExtensions
             .Replace(' ', '-');
         return slug;
     }
+
+    public static string ToUnescape(this string input)
+    {
+        return Uri.UnescapeDataString(input);
+    }
+    
+    public static string ToEscape(this string input)
+    {
+        return Uri.EscapeDataString(input);
+    }
     
     public static string RemoveDiacritics(this string input)
     {
@@ -119,11 +123,5 @@ public static class StringExtensions
             }
         }
         return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
-    }
-    
-    public static void SaveAs(this string input, string fileName, bool append = false)
-    {
-        using TextWriter tw = new StreamWriter(fileName, append);
-        tw.Write(input);
     }
 }

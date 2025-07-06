@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Package.ObjectStorage;
 using Package.ObjectStorage.Models;
-using Service.Storage.Services;
+using YAEC.Shared.Extensions;
 using YAEC.Shared.OpenApi.Abstractions;
 using YAEC.Shared.ValueObjects;
 
@@ -20,41 +20,69 @@ public class StorageEndpoints : IEndpoints
 
     public void V1(RouteGroupBuilder group)
     {
-        group.MapGet("/", async
-            ([FromServices] IObjectStorageService objectStorageService, [FromQuery] string key) =>
+        group.MapGet("/{*key}", 
+            ([FromServices] IObjectStorageService objectStorageService, [FromServices] HttpClient httpClient, string key) =>
             {
-                var data = await objectStorageService.ReadStreamObjectAsync(Uri.UnescapeDataString(key));
+                var url = objectStorageService.GetPreviewUrl(key.ToUnescape());
+                return Results.Redirect(url);
+            })
+            .WithSummary("Preview single file")
+            .MapToApiVersion(1);
+        
+        group.MapDelete("/{key}", async
+            ([FromServices] IObjectStorageService objectStorageService, string key) =>
+            {
+                await objectStorageService.DeleteObjectAsync(key.ToUnescape());
+                return Results.Ok(ApiResponse.Create());
+            })
+            .WithSummary("Delete single file")
+            .MapToApiVersion(1);
+        
+        group.MapGet("/{key}/presigned-url", async
+            ([FromServices] IObjectStorageService objectStorageService, string key) =>
+            {
+                var url = await objectStorageService.PresignedGetObjectUrlAsync(key.ToUnescape());
+                return Results.Ok(ApiResponse<string>.Create(url));
+            })
+            .WithSummary("Get file public url")
+            .MapToApiVersion(1);
+        
+        group.MapGet("/{key}/stream", async
+            ([FromServices] IObjectStorageService objectStorageService, string key) =>
+            {
+                var data = await objectStorageService.ReadStreamObjectAsync(key.ToUnescape());
                 return Results.Stream(data.Stream, data.ContentType);
             })
             .WithSummary("Stream single file")
             .MapToApiVersion(1);
         
         group.MapPost("/upload", async
-            ([FromServices] IObjectStorageService objectStorageService, IFormFile file) =>
+            ([FromServices] IObjectStorageService objectStorageService, IFormFile file, [FromQuery] bool? permanent) =>
             {
-                var data = await objectStorageService.UploadObjectAsync(new UploadObjectRequest
+                var request = new UploadObjectRequest
                 {
                     OriginalFileName = file.FileName,
                     Stream = file.OpenReadStream()
-                });
-                return Results.Ok(new ApiResponse<UploadObjectResponse>
-                {
-                    Data = data,
-                    Message = "Upload file success"
-                });
+                };
+                var data = permanent == true
+                    ? await objectStorageService.UploadPermanentObjectAsync(request)
+                    : await objectStorageService.UploadTempObjectAsync(request);
+                return Results.Ok(ApiResponse<UploadObjectResponse>.Create(data));
             })
             .WithSummary("Upload single file")
             .Produces<ApiResponse<UploadObjectResponse>>()
+            .WithFormOptions(valueLengthLimit: int.MaxValue, multipartBodyLengthLimit: int.MaxValue)
+            .WithMetadata(new DisableRequestSizeLimitAttribute(), new ConsumesAttribute("multipart/form-data"))
             .DisableAntiforgery()
             .MapToApiVersion(1);
         
-        group.MapPost("/video/process", async 
-            ([FromServices] IVideoProcessorService videoProcessorService, IFormFile file) =>
+        group.MapPut("{key}/commit", async
+            ([FromServices] IObjectStorageService objectStorageService, string key) =>
             {
-                await videoProcessorService.ProcessVideoAsync(file);
+                var newKey = await objectStorageService.CommitTempObjectAsync(key.ToUnescape());
+                return Results.Ok(ApiResponse<string>.Create(newKey));
             })
-            .WithSummary("Process video")
-            .DisableAntiforgery()
+            .WithSummary("Commit temporary file")
             .MapToApiVersion(1);
     }
 

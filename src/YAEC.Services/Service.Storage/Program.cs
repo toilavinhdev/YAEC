@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args).WithEnvironment<AppSettings>();
 
 var services = builder.Services;
 services.AddHttpContextAccessor();
+services.AddHttpClient();
 services.AddCoreSerilog();
 services.AddCoreCors();
 services.AddCoreOpenApi(typeof(Program).Assembly);
@@ -21,6 +22,7 @@ services.AddCoreMediator(typeof(Program).Assembly);
 services.AddCoreIdentity();
 services.AddRedis();
 services.AddObjectStorage();
+services.AddHostedService<InitializeBucketService>();
 services.AddTransient<IVideoProcessorService, VideoProcessorService>();
 
 var app = builder.Build();
