@@ -1,0 +1,15 @@
+# Server
+server.name: yaec-dev.kibana.server
+server.host: 0.0.0.0
+server.shutdownTimeout: "5s"
+
+# Connect elasticsearch
+elasticsearch.hosts: [ http://es01:9200 ]
+
+# Monitors
+monitoring.ui.container.elasticsearch.enabled: true
+
+# Encryption keys: $ docker container run --rm docker.elastic.co/kibana/kibana:8.0.15 bin/kibana-encryption-keys generate
+xpack.encryptedSavedObjects.encryptionKey: c9873c8ccd40830810f50e80d54f61c5
+xpack.reporting.encryptionKey: 20e945f42bbda87d1078b63c999a5383
+xpack.security.encryptionKey: 747097949935f73fac81c57151e5c2b8

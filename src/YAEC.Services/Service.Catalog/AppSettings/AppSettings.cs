@@ -1,3 +1,4 @@
+using Package.Elasticsearch;
 using Package.Identity;
 using Package.Redis;
 using YAEC.Shared.Extensions;
@@ -9,4 +10,6 @@ public class AppSettings : IAppSettings
     public IdentityOptions Identity { get; set; } = null!;
     
     public RedisOptions Redis { get; set; } = null!;
+    
+    public ElasticsearchOptions Elasticsearch { get; set; } = null!;
 }

@@ -1,5 +1,13 @@
 version: "3.8"
 
+networks:
+  elk-network:
+    driver: bridge
+
+volumes:
+  elasticsearch-data:
+    driver: local
+
 services:
   mongodb:
     container_name: ${COMPOSE_PROJECT_NAME}-mongodb
@@ -7,10 +15,10 @@ services:
     ports:
       - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-admin}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-1234qwert}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-}
     volumes:
-      - ${PROJECT_DATA_PATH:-${PWD}}/data/mongodb:/data/db
+      - ${PROJECT_DATA_PATH:-${PWD}}/mongodb:/data/db
   
   minio:
     container_name: ${COMPOSE_PROJECT_NAME}-minio
@@ -19,8 +27,43 @@ services:
       - "9000:9000" # API
       - "9001:9001" # Web UI
     environment:
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-admin}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-1234qwert}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-}
     command: server /data --console-address ":9001"
     volumes:
-      - ${PROJECT_DATA_PATH:-${PWD}}/data/minio:/data
+      - ${PROJECT_DATA_PATH:-${PWD}}/minio:/data
+  
+  elasticsearch:
+    hostname: es01
+    container_name: ${COMPOSE_PROJECT_NAME}-elasticsearch
+    build:
+      context: elasticsearch
+      dockerfile: Dockerfile
+      args:
+        - ELASTIC_VERSION=${ELASTIC_VERSION}
+    ports:
+      - "9200:9200"
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-}
+    volumes:
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ${PROJECT_DATA_PATH:-${PWD}}/elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - elk-network
+  
+  kibana:
+    container_name: ${COMPOSE_PROJECT_NAME}-kibana
+    build:
+      context: kibana
+      dockerfile: Dockerfile
+      args:
+        - ELASTIC_VERSION=${ELASTIC_VERSION}
+    ports:
+      - "5601:5601"
+    environment:
+      - KIBANA_SYSTEM_PASSWORD=${KIBANA_SYSTEM_PASSWORD:-}
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ${PROJECT_DATA_PATH:-${PWD}}/kibana:/usr/share/kibana/data
+    networks:
+      - elk-network

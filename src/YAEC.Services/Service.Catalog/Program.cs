@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Package.Elasticsearch;
 using Package.Identity;
 using Package.Redis;
 using Package.Serilog;
@@ -17,6 +18,7 @@ services.AddCoreOpenApi(typeof(Program).Assembly);
 services.AddCoreMediator(typeof(Program).Assembly);
 services.AddCoreIdentity();
 services.AddRedis();
+services.AddSingleNodeElasticsearch();
 
 var app = builder.Build();
 app.UseCoreExceptionHandler();

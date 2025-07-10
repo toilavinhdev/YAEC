@@ -1,0 +1,13 @@
+# Cluster
+cluster.name: yaec-dev.elasticsearch.cluster
+node.name: yaec-dev.elasticsearch.node
+
+# Network
+network.host: 0.0.0.0
+http.port: 9200
+
+# Discovery
+discovery.type: single-node
+
+# Securities
+xpack.security.enabled: false
